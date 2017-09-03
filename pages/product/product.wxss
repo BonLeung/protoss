@@ -200,7 +200,7 @@
   float: left;
 }
 
-.product-detail-properties, product-detail-protect {
+.product-detail-properties, .product-detail-protect {
   min-height: 80vh;
 }
 

@@ -38,7 +38,24 @@
         <view class="tabs-item {{index === currentTabIndex ? 'selected' : ''}}" bindtap="onTabsItemTap" data-index="{{index}}">{{item}}</view>
       </block>
     </view>
-    <view class="product-detail-box"></view>
+    <view class="product-detail-box">
+      <view class="product-detail-imgs" hidden="{{currentTabIndex !== 0}}">
+        <block wx:for="{{product.imgs}}">
+          <image src="{{item.img_url.url}}"></image>
+        </block>
+      </view>
+      <view class="product-detail-properties" hidden="{{currentTabIndex !== 1}}">
+        <block wx:for="{{product.properties}}">
+          <view class="properties-item">
+            <text class="properties-name">{{item.name}}</text>
+            <text class="properties-detail">{{item.detail}}</text>
+          </view>
+        </block>
+      </view>
+      <view class="product-detail-protect" hidden="{{currentTabIndex !== 2}}">
+        <view class="classname">七天无理由退货</view>
+      </view>
+    </view>
   </view>
 </view>
  
