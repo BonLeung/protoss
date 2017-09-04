@@ -51,7 +51,7 @@ Page({
   onAddingToCartTap: function(event) {
     this.addToCart();
     this.setData({
-      cartTotalCounts: this.data.cartTotalCounts + this.data.productCount
+      cartTotalCounts: cart.getCartTotalCount()
     })
   },
 

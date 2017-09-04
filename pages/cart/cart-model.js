@@ -60,13 +60,20 @@ class Cart extends Base {
 
   /**
    * 计算购物车商品的数量
+   * @param flag Boolean 是否考虑商品的选中状态
    */
-  getCartTotalCount() {
+  getCartTotalCount(flag) {
     let data = this.getCartDataFromLocal();
     let counts = 0;
 
     for(let i = 0; i < data.length; i++) {
-      counts += data[i].counts;
+      if (flag) {
+        if (data[i].selectStatus) {
+          counts += data[i].counts;          
+        }
+      } else {
+        counts += data[i].counts;
+      }
     }
     return counts;
   }
