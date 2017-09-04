@@ -4,6 +4,7 @@
     <view class="fixed-btns-box">
       <view class="fixed-cart">
         <image src="../../imgs/icon/cart@top.png"></image>
+        <view wx:if="{{cartTotalCounts > 0}}">{{cartTotalCounts}}</view>
       </view>
     </view>
     <view class="detail-topic-img">
@@ -20,7 +21,7 @@
         </picker>
       </view>
       <view class="middle-border"></view>
-      <view class="add-cart-btn {{product.stock === 0 ? 'disabled' : ''}}">
+      <view class="add-cart-btn {{product.stock === 0 ? 'disabled' : ''}}" bindtap="onAddingToCartTap">
         <text>加入购物车</text>
         <image class="cart-icon" src="../../imgs/icon/cart.png"></image>
       </view>
@@ -34,18 +35,18 @@
   </view>
   <view class="detail-bottom-box">
     <view class="tabs-box">
-      <block wx:for="{{tabs}}">
+      <block wx:for="{{tabs}}" wx:key="{{index}}">
         <view class="tabs-item {{index === currentTabIndex ? 'selected' : ''}}" bindtap="onTabsItemTap" data-index="{{index}}">{{item}}</view>
       </block>
     </view>
     <view class="product-detail-box">
       <view class="product-detail-imgs" hidden="{{currentTabIndex !== 0}}">
-        <block wx:for="{{product.imgs}}">
+        <block wx:for="{{product.imgs}}" wx:key="{{index}}">
           <image src="{{item.img_url.url}}"></image>
         </block>
       </view>
       <view class="product-detail-properties" hidden="{{currentTabIndex !== 1}}">
-        <block wx:for="{{product.properties}}">
+        <block wx:for="{{product.properties}}" wx:key="{{index}}">
           <view class="properties-item">
             <text class="properties-name">{{item.name}}</text>
             <text class="properties-detail">{{item.detail}}</text>

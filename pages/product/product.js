@@ -1,5 +1,7 @@
 import { Product } from 'product-model.js';
+import { Cart } from '../cart/cart-model.js';
 let product = new Product();
+let cart = new Cart();
 
 // product.js
 Page({
@@ -25,9 +27,10 @@ Page({
   _loadData: function() {
     product.getDetailInfo(this.data.id, (res) => {
       this.setData({
-        product: res
+        product: res,
+        cartTotalCounts: cart.getCartTotalCount()
       });
-    });
+    })
   },
 
   productCountChange: function(event) {
@@ -43,5 +46,23 @@ Page({
     this.setData({
       currentTabIndex: index
     });
+  },
+
+  onAddingToCartTap: function(event) {
+    this.addToCart();
+    this.setData({
+      cartTotalCounts: this.data.cartTotalCounts + this.data.productCount
+    })
+  },
+
+  addToCart: function() {
+    var productObj = {};
+    var keys = ['id', 'name', 'main_img_utl', 'price'];
+    for(let key in this.data.product) {
+      if (keys.indexOf(key) !== -1) {
+        productObj[key] = this.data.product[key];
+      }
+    }
+    cart.add(productObj, this.data.productCount);
   }
 })
