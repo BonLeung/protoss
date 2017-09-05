@@ -57,7 +57,7 @@ Page({
 
   addToCart: function() {
     var productObj = {};
-    var keys = ['id', 'name', 'main_img_utl', 'price'];
+    var keys = ['id', 'name', 'main_img_url', 'price'];
     for(let key in this.data.product) {
       if (keys.indexOf(key) !== -1) {
         productObj[key] = this.data.product[key];

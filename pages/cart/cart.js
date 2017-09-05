@@ -23,31 +23,38 @@ Page({
    */
   onShow: function() {
     let cartData = cart.getCartDataFromLocal();
-    let countsInfo = cart.getCartTotalCount(true);
+    // let countsInfo = cart.getCartTotalCount(true);
+    let calcData = this._calcTotalAccountAndCounts(cartData);
     this.setData({
-      selectedCounts: countsInfo,
+      selectedCounts: calcData.selectedCounts,
+      selectedTypeCounts: calcData.selectedTypeCounts,
+      account: calcData.account,
       cartData: cartData
     })
   },
 
   _calcTotalAccountAndCounts: function(data) {
     let len = data.length,
+        // 商品的总价格，排除未选中的商品
         account = 0,
         // 购买商品的总个数
         selectedCounts = 0,
         // 购买商品总类的总数
         selectedTypeCounts = 0;
     let multiple = 100;
+
     for (let i = 0; i < len; i++) {
-      account += data[i].counts * multiple * Number(data[i].price) * multiple;
-      selectedCounts += data[i].counts;
-      selectedTypeCounts++;
+      if(data[i].selectStatus) {
+        account += Number(data[i].price) * multiple * data[i].counts;
+        selectedCounts += data[i].counts;
+        selectedTypeCounts++;
+      }
     }
 
     return {
       selectedCounts: selectedCounts,
       selectedTypeCounts: selectedTypeCounts,
-      account: account / (multiple * multiple)
+      account: account / multiple
     };
   }
 })
