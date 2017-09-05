@@ -15,7 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('load');
+    
   },
 
   /**
@@ -24,8 +24,10 @@ Page({
   onShow: function() {
     let cartData = cart.getCartDataFromLocal();
     let countsInfo = cart.getCartTotalCount(true);
+    let calcData = this._calcTotalAccountAdnCounts();
     this.setData({
-      selectedCounts: countsInfo,
+      selectedCounts: calcData.selectedCounts,
+      selectedTypeCounts: calcData.selectedTypeCounts,
       cartData: cartData
     })
   },
