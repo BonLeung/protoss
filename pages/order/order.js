@@ -1,5 +1,9 @@
 import { Cart } from '../cart/cart-model.js';
+import { Address } from '../../utils/address.js';
+import { Order } from 'order-model.js';
 let cart = new Cart();
+let address = new Address();
+let order = new Order();
 
 // pages/order/order.js
 Page({
@@ -21,7 +25,8 @@ Page({
     
     this.setData({
       account: account,
-      orderProducts: orderProducts
+      orderProducts: orderProducts,
+      orderStatus: 0
     })
   },
 
@@ -44,5 +49,48 @@ Page({
    */
   onHide: function () {
   
+  },
+
+  editAddress: function(event) {
+    let that = this;
+    wx.chooseAddress({
+      success: function(res) {
+        let addressInfo = {
+          name: res.userName,
+          mobile: res.telNumber,
+          totalDetail: address.setAddressInfo(res)
+        }
+        
+        that._bindAddressInfo(addressInfo);
+
+        // 保存地址
+        address.submitAddress(res, (flag) => {
+          if (!flag) {
+            this.showTips('操作提示', '地址信息更新失败');
+          }
+        })
+      }
+    });
+  },
+
+  showTips: function(title, content, flag = false) {
+    wx.showModal({
+      title: title,
+      content: content,
+      showCancel: true,
+      success: function(res) {
+        if(flag) {
+          wx.switchTab({
+            url: '/pages/my/my',
+          });
+        }
+      }
+    })
+  },
+
+  _bindAddressInfo: function(addressInfo) {
+    this.setData({
+      addressInfo: addressInfo
+    })
   }
 })
