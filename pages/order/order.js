@@ -19,10 +19,9 @@ Page({
     let account = options.account;
     let orderProducts = cart.getCartDataFromLocal(true);
     
-    wx.chooseAddress({
-      success: function(res) {
-        console.log(res);
-      }
+    this.setData({
+      account: account,
+      orderProducts: orderProducts
     })
   },
 
