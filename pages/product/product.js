@@ -57,12 +57,18 @@ Page({
 
   addToCart: function() {
     var productObj = {};
-    var keys = ['id', 'name', 'main_img_utl', 'price'];
+    var keys = ['id', 'name', 'main_img_url', 'price'];
     for(let key in this.data.product) {
       if (keys.indexOf(key) !== -1) {
         productObj[key] = this.data.product[key];
       }
     }
     cart.add(productObj, this.data.productCount);
+  },
+
+  onCartTap: function(event) {
+    wx.switchTab({
+      url: '/pages/cart/cart',
+    });
   }
 })

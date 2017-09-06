@@ -28,14 +28,28 @@ class Cart extends Base {
   }
 
   /**
-  * 从缓存中读取购物车的数据 
-  */
-  getCartDataFromLocal() {
+   * 从缓存中读取购物车的数据
+   * @params flag boolean 是否过滤未选中的商品
+   */
+  getCartDataFromLocal(flag) {
     var res = wx.getStorageSync(this._storageKeyName);
     if (!res) {
       res = [];
     }
+    if (flag) {
+      let newRes = [];
+      for (let i = 0; i < res.length; i++) {
+        if (res[i].selectStatus) {
+          newRes.push(res[i]);
+        }
+      }
+      res = newRes;
+    }
     return res;
+  }
+
+  execSetStorageSync(cartData) {
+    wx.setStorageSync(this._storageKeyName, cartData);
   }
 
   /**
@@ -76,6 +90,52 @@ class Cart extends Base {
       }
     }
     return counts;
+  }
+
+  /**
+   * 增加商品数量
+   */
+  addCounts(id) {
+    this._changeCounts(id, 1);
+  }
+
+  /**
+   * 减少商品数量
+   */
+  cutCounts(id) {
+    this._changeCounts(id, -1);
+  }
+  
+
+  /**
+   * 修改商品的数目
+   * @params id int 商品id
+   * @params counts int 数目
+   */
+  _changeCounts(id, counts) {
+    let cartData = this.getCartDataFromLocal();
+    let hasInfo = this._isHasThatOne(id, cartData);
+    if (hasInfo.index !== -1) {
+      if (hasInfo.data.counts > 1) {
+        cartData[hasInfo.index].counts += counts;
+      }
+    }
+    wx.setStorageSync(this._storageKeyName, cartData);
+  }
+
+  delete(ids) {
+    if (!(ids instanceof Array)) {
+      ids = [ids];
+    }
+    let cartData = this.getCartDataFromLocal();
+    for(let i = 0; i < ids.length; i++) {
+      let hasInfo = this._isHasThatOne(ids[i], cartData);
+      if (hasInfo.index !== -1) {
+        cartData.splice(hasInfo.index, 1);
+      } 
+    }
+    
+    wx.setStorageSync(this._storageKeyName, cartData);
   }
 }
 
